@@ -1,0 +1,206 @@
+<%@include file="header.jsp" %>
+<%@ page import="java.util.ArrayList"%> 
+<%@ page import="model.Link"%> 
+<%! @SuppressWarnings("unchecked") %> 
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+
+<div id="container">
+	<br>
+<%--
+	<a class="button" href="#popup_NewLink"><img src="images/add.png" class="add icon" title="New link"></a>
+--%> 	
+	<br>
+	<p> Links </p>
+	<br>
+	<input type="text" name="Search" placeholder="  Search link..." id="keyword">
+	<input type="button" value="Search" id="getBtn"><br>
+		
+		
+	
+<%--**** LIST ALL LINKS ****--%> 
+	<%
+	if(request.getAttribute("links")!=null){	
+		ArrayList<Link> links= (ArrayList<Link>)request.getAttribute("links");
+		for(int i=0;i<links.size();i++){
+			out.print("<div class='gallery'>");
+			out.print("<li>");
+				
+					out.print("<a class='icon delete' href='#' id='delete_"+links.get(i).getLink_id()+"' name='"+links.get(i).getTitle()+"' title='Delete'>&times;</a>");
+			//		out.print("<div class='icon edit' id='edit_"+links.get(i).getLink_id()+"' name='"+links.get(i).getTitle()+"'>");
+					out.print("<div class='icon edit' id='edit_"+links.get(i).getLink_id()+"' name='"+links.get(i).getTitle()+"'>");
+					
+					// <img src="">
+					out.print("<img class='linkimg' src='images/no_image.png' >");
+					out.print("<h3>"+links.get(i).getTitle() + links.get(i).getLink_id() +"</h3>");
+			//		out.print("\n<img src='images/edit3.png' class='icon edit' id='edit_"+links.get(i).getLink_id()+"' name='"+links.get(i).getTitle()+"' title='Edit'>");
+			//		out.print("\n<img src='images/delete.png' class='icon delete' id='delete_"+links.get(i).getLink_id()+"' name='"+links.get(i).getTitle()+"' title='Delete'>");
+			//		out.print("<a class='close' href='#''>&times;</a>");
+					
+			
+					out.print("<p>"+links.get(i).getLink()+"</p>");
+					out.print("<p>"+links.get(i).getDetails()+"</p>");
+					out.print("\n</br>");
+					
+				
+			out.print("</li>");
+			out.print("</div>");
+//			out.print("</div>");
+		}	
+	}
+	%>
+	
+	
+	<div id="popup2" class="overlay">
+		<div class="popup">
+			<h2>Here i am</h2>
+			<a class="close" href="#">&times;</a>
+			<div class="content">
+				Thank to pop me out of that button, but now i'm done so you can close this window.
+			</div>
+		</div>
+	</div>
+	
+	
+		<%--**** NEW LINK/ADD LINK POPUP ****--%> 
+	<div id="popup_NewLink" class="overlay">
+		<div class="popup">
+			<a class="close" href="#">&times;</a>
+			<div class="content">
+				<fieldset id="linkDetails">
+					<legend>New link:</legend>
+					<form action="Servlet_NewLink" method="post" id="newForm">
+						<label>Board:</label>
+							<select name="boardAjax" id="boardAjax"></select><br>
+	<!--  
+						<label>Kuvat:</label>
+							<img src="images/add_image.png" class="icon_mini" id="lisaaKuvaVeneeseen"><br><br>
+	-->
+						<label>Title:</label>
+							<input type="text" name="title" id="title" value="" size="70"><br>	
+						<label>Link:</label>
+							<input type="text" name="link" id="link" value="" size="70"><br>	
+						<label>Details:</label>	
+							<textarea rows="8" cols="70" name="details" id="details"></textarea><br>
+						<label></label>	
+						<input type="submit" value="Save" id="addBtn">
+						
+	<%
+	if(request.getParameter("ok")!=null){
+		if(request.getParameter("ok").equals("1")){
+			out.print("New link has been added.");	
+		}else if(request.getParameter("ok").equals("0")){
+			out.print("Addig was unsuccesful.");	
+		}
+	}
+	%>
+					</form>
+				</fieldset>
+			</div>
+		</div>
+	</div>
+	
+	<%--**** DELETE CONFIRMATION ****--%>
+	
+	<div id="poistonVahvistus">
+		<span id="poistettavaNimi"></span>
+		<img src="images/accept.png" title="Poista" class="icon" id="vahvistaPoisto">
+		<img src="images/delete.png" title="Peruuta" class="icon" id="peruutaPoisto">
+		</div>
+	
+	</body>
+	
+	<script>
+	$(document).ready(function(){
+			$("#poistonVahvistus").hide();
+		
+		
+			$("#getBtn").click(function(){
+				document.location="Servlet_GetLinks?keyword=" + $("#keyword").val();		
+			});
+			
+			$("#linkDetails").css({
+				"width": "500px", 
+				"border-radius": "15px"
+			});	
+	
+			
+			$("#newForm").validate({						
+				rules: {	
+					link:  {
+						required: true,
+						minlength: 2				
+					}		
+				},
+				messages: {
+					linkUrl: {     
+						required: "Required",
+						minlength: "Too short"			
+					}
+				},			
+				
+				submitHandler: function (form) {	
+					document.forms["newForm"].submit();
+				}	
+			});   
+		});
+		
+		$("#boardAjax").append("<option value='-1'>Select board</option>");  
+		$.getJSON("Servlet_BoardsAjax", function(result){
+		    $.each(result, function(i, field){
+		    	$("#boardAjax").append("<option value='"+field.Board_id+"'>"+field.Name+"</option>");            
+		    });
+		});
+	
+		
+	/*	$.getJSON("Servlet_BoardsAjax", function(result){
+	        $.each(result, function(i, field){
+	        	$("#boardAjax").append("<option value='"+field.Link_id+"'>"+field.Name+" (As.no "+field.Link_id+")</option>");            
+	        });
+	    });
+	 */
+		
+		$(".edit").click(function(){
+			//Objektin ominaisuuksien ja arvojen läpikäynti (ei tarvita tässä tapauksessa, vain esimerkkinä)
+			/*
+			var obj = $(this); 	
+			for(var key in obj) {
+				console.log('key: ' + key + '\n' + 'value: ' + obj[key]);
+			}
+			*/		
+			document.location="Servlet_EditLink?Link_id=" + $(this)[0].id;	
+		});
+		
+		var poistettava_id;	
+		$(".delete").click(function(event){	//event kantaa mukanaan tapahtuman, mm. klikkauksen sijainnin	
+			poistettava_id=$(this)[0].id;
+			$("#poistettavaNimi").html("Poista " + $(this)[0].title + "?<br>");
+			$("#poistonVahvistus").css({ 
+				"width": "170px", 
+				"height": "50px",
+				"background-color": "#4CAF50",
+				"border-radius": "15px",
+				"color": "white",
+				"text-align": "center",
+				"padding": "10px",
+				"border": "1px solid black",
+				"position": "absolute",
+				"left": event.pageX +"px",
+				"top": event.pageY +"px"
+			});			
+			$("#poistonVahvistus").show();
+		});
+		
+		$("#vahvistaPoisto").click(function(){
+			document.location="Servlet_DeleteLink?Link_id="+poistettava_id;
+		});
+		
+		$("#peruutaPoisto").click(function(){
+			$("#poistonVahvistus").hide();
+		});
+		
+	
+		
+	</script>
+</div>
+</html>

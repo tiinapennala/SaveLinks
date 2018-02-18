@@ -1,0 +1,9 @@
+package model;
+
+public class Photo {
+	private int photo_id;
+	private String photo;
+	
+	
+	
+}

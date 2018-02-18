@@ -1,0 +1,341 @@
+@CHARSET "ISO-8859-1";
+
+
+
+
+
+
+/** HEADER example https://designbump.com/create-a-flat-website-template-htmlcss-tutorial/*/
+#header-wrapper {
+ 	overflow: hidden;
+ 	background: #FFFFFF;
+ 	border-bottom: 2px solid #EFEFEF;
+ 	box-shadow: 0px 0px 3px #888888;
+}
+
+#header {
+	overflow: hidden;
+	height: 70px;
+}
+
+
+/** CONTAINER */
+.containerheader{
+ width: 1100px;
+ margin: 0px auto;
+}
+
+
+.clearfix{
+	clear: both;
+}
+
+/** LOGO */
+#logo{
+	float: left;
+	width: 400;
+	padding: 0px 0px 0px 40px;
+}
+
+
+#logo h1 a {
+	display: block;
+	line-height: 60px;
+	text-decoration: none;
+/*	font-family: 'Kavoon', cursive; */
+	font-size: 35px;
+	color: #cccccc;
+/*	color: #00d9a9;*/
+}
+
+#header-wrapper .button {
+    background-color: #4285F4;
+    border: none;
+    color: white;
+    padding: 6px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    margin: 4px 2px;
+    cursor: pointer;
+	margin: 0 0 0.5em 9.5em;
+	float: left;
+}
+
+
+/** MENU */
+#menu {
+	float: right;
+	width: 700px;
+}
+
+#menu ul {
+	float: right;
+	margin: 0px;
+	padding: 15px 0px 0px 0px;
+	list-style: none;
+	line-height: normal;
+}
+
+#menu li {
+	float: left;
+	margin-left: 10px;
+}
+
+#menu a {
+	display: block;
+	padding: 10px 20px;
+	letter-spacing: 2px;
+	text-decoration: none;
+	text-transform: uppercase;
+	font-family: 'Archivo Narrow', sans-serif;
+	font-size: 12px;
+	font-weight: 600;
+	color: #FFFFFF;
+}
+
+
+#menu .active a {
+	background: #00d9a9;
+	border-radius: 5px;
+	color: #FFFFFF;
+}
+
+#menu .active a:hover {
+	background-color: #00a987;
+}
+
+#menu .active a:active {
+	background-color: #20e1b6;
+}
+
+#menu a:hover{
+	text-decoration: none;
+}
+
+
+
+
+
+/******** BODY **********/
+
+body {
+	margin: 0px;
+	padding: 0px;
+	font-family: 'Arial', sans-serif;
+	font-size: 13px;
+	background: #FFFFFF;
+	
+}
+
+#container {
+	padding-left: 190px;
+	padding-right: 180px;
+}
+
+#container > p{
+	padding-left: 20px;
+}
+
+
+/* NEW LINK LIST CSS EXAMPLE: https://designshack.net/articles/css/5-simple-and-practical-css-list-styles-you-can-copy-and-paste/*/
+/** LISTED LINKS GALLERY */
+
+* {margin: 0; padding: 0;}
+
+#container .gallery {
+    border: 1px solid #ccc;
+    margin: 6px 0 0 0;
+}
+
+ul {
+  list-style-type: none;
+  width: 500px;
+}
+
+h3 {
+  font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
+}
+
+li p {
+  font: 200 12px/1.5 Georgia, Times New Roman, serif;
+}
+
+li {
+  padding: 10px;
+  overflow: auto;
+}
+
+li:hover {
+  background: #eee;
+  cursor: pointer;
+}
+
+li .linkimg {
+  float: left;
+  margin: 0 15px 0 0;
+  width: 100px;
+  height: 100px;
+}
+
+.icon{
+	  height: 2px;
+    width: 2px;
+}
+
+/*
+li .icon {
+  float: left;
+  margin: 0 15px 0 0;
+  	width: 20px;
+    height: 20px;
+}
+*/
+/*
+li img .linkimg {
+  float: left;
+  margin: 0 15px 0 0;
+}
+
+*/
+
+
+.gallery .delete {
+	float:right;
+    margin-top:-30px;
+    margin-right:30px;
+    cursor:pointer;
+    color: #fff;
+    border: 1px solid #AEAEAE;
+    border-radius: 30px;
+    background: #605F61;
+    font-size: 31px;
+    font-weight: bold;
+    display: inline-block;
+    line-height: 0px;
+    padding: 16px 4px;       
+}
+.gallery .delete:hover {
+  color: #06D85F;
+}
+
+
+
+
+
+
+
+
+
+
+/* NEW LINK POPUP CSS EXAMPLE: https://codepen.io/imprakash/pen/GgNMXO*/
+
+/* BACKGROUD FROM THE EXAMPLE
+body {
+  font-family: Arial, sans-serif;
+  background: url(http://www.shukatsu-note.com/wp-content/uploads/2014/12/computer-564136_1280.jpg) no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+*/
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+}
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  margin: 30px auto;
+  padding: 10px;
+  background: #fff;
+  border-radius: 5px;
+  width: 60%;
+  position: relative;
+  transition: all 5s ease-in-out;
+}
+
+.popup h2 {
+  margin-top: 0;
+  color: #333;
+  font-family: Tahoma, Arial, sans-serif;
+}
+.popup .close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+.popup .close:hover {
+  color: #06D85F;
+}
+.popup .content {
+  max-height: 30%;
+  overflow: auto;
+}
+
+
+/*
+.popup img {
+	width: 200px;
+    height: 200px;
+}
+*/
+
+
+@media screen and (max-width: 700px){
+  .popup{
+    width: 70%;
+  }
+}
+
+
+
+
+#keyword {
+	border-radius: 4px;
+	height: 40px;
+	padding: 0;
+	width: 50%;
+	z-index: 670;
+	border: 0;
+	background-color: #efefef;
+	cursor: pointer;
+	margin: 15px 15px 15px 0;
+
+	
+}
+
+#getBtn{
+	
+}
+
+.search button {
+                position:relative;
+                padding:6px 15px;
+                left:-8px;
+                border:2px solid #207cca;
+                background-color:#207cca;
+                color:#fafafa;
+}
+form search .button:hover  {
+                background-color:#fafafa;
+                color:#207cca;
+}
+
+

@@ -1,0 +1,52 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
+<link rel="stylesheet" href="/Link_Service/style.css" type="text/css" >
+<title>BLink</title>
+<%-- 
+<style>
+label{
+    display:inline-block;
+    width:120px;
+    text-align:right;
+    vertical-align:top;
+}
+label.error {
+	width:80px;	
+    color: red; 
+    text-align:left;  
+}
+.header_icon{
+	height:50px;
+}
+
+</style>
+--%>
+</head>
+
+<body>
+	<div id="header-wrapper">
+<%-- 
+		<img src="images/home.png" class="header_icon" title="All Links" onclick="document.location='mainview.jsp'">
+		<img src="images/user.png" class="header_icon" title="Shared" onclick="document.location='boards.jsp'">
+		<hr>
+		--%>
+
+		  <div id="header" class="containerheader">
+		   <div id="logo">
+				<h1><a href="#">BLink</a></h1>
+			</div>
+			<div id="menu">
+				<ul>
+					<li class="active"><a href="#" onclick="document.location='boards.jsp'">Boards</a></li>
+					<li><a href="#" onclick="document.location='mainview.jsp'">Links</a></li>
+				</ul>
+			</div>
+			<a class="button" href="#popup_NewLink">New Link</a>
+		 </div>
+	</div>

@@ -1,0 +1,189 @@
+package dao;
+
+import java.util.ArrayList;
+
+import model.Link;
+
+public class Dao_Links extends Dao {
+	
+	public ArrayList<Link> getLinks(String keyword) throws Exception{		
+		ArrayList<Link> links = new ArrayList<Link>();
+		sql = "SELECT * FROM LS_Links WHERE (Link LIKE ? OR Title LIKE ?) AND Deleted=0 ORDER BY 1 DESC"; 		
+		con=yhdista();
+		if(con!=null){ //if connection is successful
+			stmtPrep = con.prepareStatement(sql); 
+			stmtPrep.setString(1, "%"+keyword+"%");
+			stmtPrep.setString(2, "%"+keyword+"%");
+    		rs = stmtPrep.executeQuery();  
+			if(rs!=null){ //if query is successful								
+				while(rs.next()){
+					Link link = new Link();
+					link.setLink_id(rs.getInt("link_id"));
+					link.setLink(rs.getString("link"));
+					link.setTitle(rs.getString("title"));
+					link.setDetails(rs.getString("details"));
+					links.add(link);
+				}					
+			}
+			con.close();
+		}			
+		return links;
+	}
+	
+	
+	public Link getLink(int link_id) throws Exception{
+		Link link=null;		
+		sql = "SELECT * FROM LS_Links WHERE Link_id=?"; 		
+		con=yhdista();
+		if(con!=null){ //jos yhteys onnistui
+			stmtPrep = con.prepareStatement(sql); 
+			stmtPrep.setInt(1, link_id);			
+    		rs = stmtPrep.executeQuery();  
+			if(rs!=null){ //jos kysely onnistui									
+				while(rs.next()){
+					link = new Link();
+					link.setLink_id(rs.getInt("link_id"));
+					link.setLink(rs.getString("link"));
+					link.setTitle(rs.getString("title"));
+					link.setDetails(rs.getString("details"));
+				}					
+			}
+			con.close();
+		}			
+		return link;
+	}
+
+	
+	public int newLink(Link link){
+		int paluuArvo=-1;	
+		sql="INSERT INTO LS_Links(Link, Title, Details) VALUES(?,?,?);";						  
+		try {
+			con = yhdista();
+			stmtPrep=con.prepareStatement(sql); 
+			stmtPrep.setString(1, link.getLink());
+			stmtPrep.setString(2, link.getTitle());
+			stmtPrep.setString(3, link.getDetails());
+			stmtPrep.executeUpdate();
+			// Haetaan generoitu id			
+ 			sql="SELECT MAX(Link_id) FROM LS_Links"; 	
+			stmtPrep = con.prepareStatement(sql); 		
+    		rs = stmtPrep.executeQuery();  
+    		rs.next();
+			paluuArvo=rs.getInt(1);
+	        con.close();
+		} catch (Exception e) {				
+			e.printStackTrace();
+		}				
+		return paluuArvo;
+	}
+	
+	
+	public boolean editLink(Link link){
+		boolean paluuArvo=true;
+		sql="UPDATE LS_Links SET Link=?, Title=?, Details=? WHERE Link_id=?;";						  
+		try {
+			con = yhdista();
+			stmtPrep=con.prepareStatement(sql);
+			stmtPrep.setString(1, link.getLink());
+			stmtPrep.setString(2, link.getTitle());
+			stmtPrep.setString(3, link.getDetails());
+			stmtPrep.setInt(4, link.getLink_id());
+			stmtPrep.executeUpdate();
+	        con.close();
+		} catch (Exception e) {				
+			e.printStackTrace();
+			paluuArvo=false;
+		}				
+		return paluuArvo;
+	}
+	
+	
+	public void deleteLink(int Link_id) throws Exception{		
+		sql = "UPDATE LS_Links SET Deleted=1 WHERE Link_id=?"; 		
+		con=yhdista();
+		if(con!=null){ //jos yhteys onnistui
+			stmtPrep = con.prepareStatement(sql); 
+			stmtPrep.setInt(1, Link_id);			
+			stmtPrep.executeUpdate();			
+			con.close();
+		}		
+	}
+	
+	
+	public void addPicture(String kuva, int link_id) throws Exception{		
+		sql = "INSERT INTO LS_Photos(Photo, Link_id, Priority) VALUES(?,?,?)"; 		
+		con=yhdista();
+		if(con!=null){ //jos yhteys onnistui
+			stmtPrep = con.prepareStatement(sql); 
+			stmtPrep.setString(1, kuva);
+			stmtPrep.setInt(2, link_id);
+			stmtPrep.setInt(3, 0);
+			stmtPrep.executeUpdate();			
+			con.close();
+		}		
+	}
+	
+	
+	public ArrayList<String> getPictures(int link_id) throws Exception{
+		ArrayList<String> kuvat = null;
+		sql= "SELECT * FROM LS_Photos WHERE Link_id=? ORDER BY Priority";	
+		con=yhdista();
+		if(con!=null){ //jos yhteys onnistui
+			stmtPrep = con.prepareStatement(sql); 
+			stmtPrep.setInt(1, link_id);			
+    		rs = stmtPrep.executeQuery();  
+			if(rs!=null){ //jos kysely onnistui									
+				kuvat = new ArrayList<String>();
+				while(rs.next()){
+					kuvat.add(rs.getString("Link_id"));
+				}					
+			}
+			con.close();
+		}			
+		return kuvat;		
+	}
+	
+	public void orderPictures(String kuvatStr) throws Exception{
+		con=yhdista();
+		if(con!=null){ 
+			String [] kuvat = kuvatStr.split(";");
+			for(int i=0;i<kuvat.length;i++){
+				sql = "Update LS_Photos SET Priority=? WHERE Photo=?"; 	
+				stmtPrep = con.prepareStatement(sql); 
+				stmtPrep.setInt(1, i);
+				stmtPrep.setString(2, kuvat[i]);
+				stmtPrep.executeUpdate();	
+			}					
+			con.close();
+		}		
+	}
+	
+	public String haePaaKuva(int link_id) throws Exception{
+		String kuva=null;
+		sql= "SELECT * FROM LS_Photos WHERE Link_id=? ORDER BY Priority LIMIT 1";	
+		con=yhdista();
+		if(con!=null){ //jos yhteys onnistui
+			stmtPrep = con.prepareStatement(sql); 
+			stmtPrep.setInt(1, link_id);			
+    		rs = stmtPrep.executeQuery();  
+			if(rs!=null){ //jos kysely onnistui									
+				while(rs.next()){
+					kuva=rs.getString("Photo");
+				}					
+			}
+			con.close();
+		}		
+		return kuva;
+	}
+	
+	public void deletePicture(String photo) throws Exception{		
+		sql = "DELETE FROM LS_Photos WHERE Photo=?"; 		
+		con=yhdista();
+		if(con!=null){ //jos yhteys onnistui
+			stmtPrep = con.prepareStatement(sql); 
+			stmtPrep.setString(1, photo);			
+			stmtPrep.executeUpdate();			
+			con.close();
+		}		
+	}
+}

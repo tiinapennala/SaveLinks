@@ -1,0 +1,59 @@
+<%@include file="header.jsp" %>
+<div id="container">
+<%
+//***ALKU TULEE header.jsp tiedostosta******************************************************************************************************
+%>
+<div id="kirjautuminen">
+	<legend style="color: #20e1b6; font-size:14px">Sign In:</legend>	
+	<br>
+	<form action="Servlet_SignIn" method="post" id="SignInForm">
+	<label>Email:</label>	
+	<input type="text" value="mehis@gmail.com" name="uid" id="uid"><br>
+	<label>Password:</label>
+	<input type="password" value="testisalasana" name="pwd" id="pwd"><br>
+	<label></label>
+	<br><br>
+	<input type="button" class="indexbutton" value="Sign In" id="SignInBtn">
+	</form>
+	<br>
+	<input type="button" class="indexbutton" value="New User" id="RegisterBtn" onclick="document.location='newUser.jsp'"><br>
+</div>
+
+
+
+
+<%
+if(request.getAttribute("message")!=null){	
+	response.sendRedirect("Servlet_GetPhotos?link_id=" + request.getParameter("link_id"));
+	Thread.sleep(5000);//odotetaan 5 sekuntia, jotta photo ehtii latautua
+}
+%>
+<%
+	if(request.getParameter("singin")!=null){
+		if(request.getParameter("signin").equals("0")){
+			out.print("Adding the customer was not succesful!");	
+		} if(request.getParameter("signin").equals("1")){
+			out.print("New User have been added!");	
+		}if(request.getParameter("signin").equals("2")){
+			out.print("Incorrect user details, please try again!");	
+		} 
+	}
+%>
+
+<script>
+	$(document).ready(function(){
+		$("#kirjautuminen").css({
+			"width": "300px", 
+			"border-radius": "15px"
+		});
+		
+		$("#SignInBtn").click(function(){		
+			if($("#uid").val().length>0&&$("#pwd").val().length>0){
+				document.forms["SignInForm"].submit();
+			}
+		});	
+	});
+</script>
+</div>
+</body>
+</html>
